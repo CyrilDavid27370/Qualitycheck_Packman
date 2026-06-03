@@ -1,0 +1,164 @@
+{#
+    _shared/nav.html.twig
+    Navigation principale de l'application QCP.
+    - Non connecté  : Accueil | Connexion | Enregistrement
+    - Connecté      : Accueil | Catégories (avec dropdown si sous-catégories)
+    - ROLE_ADMIN    : + Administration (dropdown)
+
+    TODO : remplacer les catégories codées en dur par une boucle Twig
+          dynamique depuis la BDD quand Category/CategoryType seront prêts.
+#}
+
+<nav class="navbar nav-expand-lg navbar-dark bg-primary qcp-navbar px-4">
+
+<button class="navbar-toggler" 
+        type="button" 
+        data-bs-toggle="collapse" 
+        data-bs-target="#qcpNavbarContent" 
+        aria-controls="qcpNavbarContent" 
+        aria-expanded="false" 
+        aria-label="Toggle navigation">
+
+  <span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarQCP">
+  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+  {# Accueil — toujours visible #}
+
+    <li class="nav-item">
+      <a href="{{ path('app_home') }}" 
+      class="nav-link {% if app.request.attributes.get('_route') == 'app_home' %}active{% endif %}">
+        <i class="bi bi-house-door"></i> Accueil
+      </a>
+    </li>
+
+    {% if app.user %}
+
+    {# Moteur thermique — dropdown #}
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle"
+        role="button" 
+        data-bs-toggle="dropdown" 
+        aria-expanded="false">
+        Moteur thermique
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="#" class="dropdown-item">Moteur</a></li>
+        <li><a href="#" class="dropdown-item">Boîte de vitesses</a></li>
+      </ul> 
+    </li>
+
+    {# GMPE — dropdown #}
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle"
+        role="button" 
+        data-bs-toggle="dropdown" 
+        aria-expanded="false">
+        GMPE
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="#" class="dropdown-item">Moteur</a></li>
+        <li><a href="#" class="dropdown-item">Stator</a></li>
+        <li><a href="#" class="dropdown-item">Rotor</a></li>
+        <li><a href="#" class="dropdown-item">PEB</a></li>
+        <li><a href="#" class="dropdown-item">Reducteur</a></li>
+      </ul> 
+    </li>
+
+    {# E-Motor — dropdown #}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            E-Motor
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li><a class="dropdown-item" href="#">Moteur AFM</a></li>
+            <li><a class="dropdown-item" href="#">Carter C-MOT</a></li>
+            <li><a class="dropdown-item" href="#">Carter C-FERM</a></li>
+            <li><a class="dropdown-item" href="#">Stator AFM</a></li>
+            <li><a class="dropdown-item" href="#">Rotor AFM</a></li>
+          </ul>
+        </li>
+    
+    {# Module — dropdown #}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+              Module
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li><a class="dropdown-item" href="#">Modules GPEC batteries</a></li>
+            <li><a class="dropdown-item" href="#">Modules PVAL</a></li>
+          </ul>
+        </li>
+
+      {# Batterie — lien simple (pas de sous-catégories pour l'instant) #}
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            Batterie
+          </a>
+        </li>
+
+        {# Administration — ROLE_ADMIN uniquement #}
+        {% if is_granted('ROLE_ADMIN') %}
+          <li class="nav-item dropdown">
+            <a href="#" 
+            class="nav-link dropdown-toggle {% if app.request.attributes.get('_route') starts with 'app_admin' %}active{% endif %}"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="bi bi-shield-lock"></i>Administration
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li>
+                <a href="#" 
+                class="dropdown-item">
+                <i class="bi bi-people"></i> Utilisateurs
+                </a>
+              </li>
+              <li>
+                <a href="#" class="dropdown-item">
+                <i class="bi bi-tags"></i> Catégories
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a href="#" class="dropdown-item">
+                <i class="bi bi-file-earmark"></i> Certificats
+                </a>
+              </li>
+            </ul>
+          </li>
+        {% endif %}
+      
+    {% else %}
+
+    {# Connexion — utilisateur non connecté #}
+    <li class="nav-item">
+      <a href="#" 
+      class="nav-link {% if app.request.attributes.get('_route') == 'app_login' %}active{% endif %}">
+        <i class="bi bi-box-arrow-in-right"></i> Connexion
+      </a>
+    </li>
+
+    {# Enregistrement — utilisateur non connecté #}  
+    <li class="nav-item">
+      <a href="#" 
+      class="nav-link {% if app.request.attributes.get('_route') == 'app_register' %}active{% endif %}">
+        <i class="bi bi-person-plus"></i> Enregistrement
+      </a> 
+    </li>
+
+    {% endif %}
+    
+  </ul>
+</div>
+</nav>

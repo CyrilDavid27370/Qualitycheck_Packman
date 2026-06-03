@@ -1,10 +1,53 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %}Accueil — QualityCheck Packman{% endblock %}
+{% block title %}Accueil - QualityCheck Packman{% endblock %}
 
 {% block body %}
-    <div class="container py-4">
-        <h1 class="text-warning">Bienvenue sur QualityCheck Packman</h1>
-        <p class="text-light">Sélectionnez une catégorie pour commencer.</p>
+
+{# Section hero — image de fond plein écran #}
+<section class="qcp-hero">
+    {# Carte texte centrée par dessus l'image de fond #}
+    <div class="qcp-hero_card">
+
+        <h1 class="qcp-hero_card-title">
+        <span class="text-warning">Bienvenue sur QualityCheck</span> Packman
+        </h1>
+
+        <p class="qcp-hero_card-text">
+            Application de contrôle qualité automobile.<br>
+            Contrôlez, analysez, garantissez et optimisez
+            la conformité des supports de validation.
+        </p>
+
+        {# Icônes des 4 valeurs #}
+        <div class="qcp-hero_icons d-flex justify-content-center gap-4 mt-3">
+            <div class="text-center">
+                <i class="bi bi-check2-square fs-3 text-warning"></i>
+                <div class="small text-light mt-1">Controler</div>
+            </div>
+            <div class="text-center">
+                <i class="bi bi-check2-square fs-3 text-warning"></i>
+                <div class="small text-light mt-1">Analyser</div>
+            </div>
+            <div class="text-center">
+                <i class="bi bi-check2-square fs-3 text-warning"></i>
+                <div class="small text-light mt-1">Garantir</div>
+            </div>
+            <div class="text-center">
+                <i class="bi bi-check2-square fs-3 text-warning"></i>
+                <div class="small text-light mt-1">Optimiser</div>
+            </div>
+        </div>
+
+        {# Bouton de connexion — visible uniquement si non connecté #}
+        {% if not app.user %}
+        <div class="mt-4">
+            <a href="#" class="btn btn-lg btn-warning">
+                <i class="bi bi-box-arrow-in-right"></i> Se connecter
+            </a>
+        </div>
+        {% endif %}
     </div>
+</section>
+
 {% endblock %}

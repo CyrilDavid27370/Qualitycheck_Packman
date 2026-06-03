@@ -1,0 +1,29 @@
+<header class="qcp-header d-flex align-items-center justify-content-between px-3 px-md-4 py-2">
+  {# Logo QCP#}
+    <div class="qcp-header_brand">
+      <a href="{{ path('app_home') }}">
+        <img src="{{ asset('image/logo_qcp.png') }}" alt="Logo QualityCheck Packman" class="qcp-logo">
+      </a>
+    </div>
+
+    {# Titre de l'application #}
+    <div class="qcp-header_title">
+      <span class="text-light fw-bold">QualityCheck</span>
+      <span class="text-warning fw-bold">Packman</span>
+    </div>
+
+    {# Infos utilisateur connecté (visible desktop uniquement) #}
+      {% if app.user %}
+        <div class="qcp-header_user d-none d-md-flex align-items-center gap-2">
+          <i class="bi bi-person-circle text-warning></i>
+          <span class="text-light small">
+            {{ app.user.matricule }}
+          </span>
+          <span class="badge bg-secondary small">{{ app.user.role }}</span>
+        </div>
+        <a href="{{ path('app_logout') }}" class="btn btn-sm btn-outline-warning ms-1">
+          <i class="bi bi-box-arrow-right"></i>
+        </a>
+      </div>
+    {% endif %}
+  </header>
