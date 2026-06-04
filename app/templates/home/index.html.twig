@@ -42,7 +42,7 @@
         {# Bouton de connexion — visible uniquement si non connecté #}
         {% if not app.user %}
         <div class="mt-4">
-            <a href="#" class="btn btn-lg btn-warning">
+            <a href="{{ path('app_login') }}" class="btn btn-lg btn-warning">
                 <i class="bi bi-box-arrow-in-right"></i> Se connecter
             </a>
         </div>
