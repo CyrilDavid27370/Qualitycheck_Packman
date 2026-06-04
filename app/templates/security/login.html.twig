@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion — QualityCheck Packman{% endblock %}
+
+{% block body %}
+
+<section class="qcp-hero">
+    <div class="qcp-hero__card">
+        {# Logo #}
+        <div class="mb-3">
+            <img src="{{ asset('images/logo_qcp.png') }}" alt="Logo QualityCheck Packman" height="70">
+        </div>
+
+        <h2 class="qcp-hero__card-title mb-4">
+            <span class="text-warning">Connexion</span>
+        </h2>
+
+        {# Message si déjà connecté #}
+        {% if app.user %}
+            <div class="alert alert-info">
+                Vous êtes déjà connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>.
+                <a href="{{ path('app_logout') }}" class="alert-link">Se déconnecter</a>
+            </div>
+        {% endif %}
+
+        {# Message d'erreur #}
+        {% if error %}
+            <div class="alert alert-danger">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        {# Formulaire de connexion #}
+        <form method="post" action="{{ path('app_login') }}">
+        
+            {# Matricule #}
+            <div class="mb-3 text-start">
+                <label for="username" class="form-label text-light">
+                    <i class="bi bi-person"></i> Matricule
+                </label>
+                <input type="text"
+                        name="_username"
+                        id="username"
+                        value="{{ last_username }}"
+                        class="form-control bg-dark text-light border-secondary"
+                        placeholder="Matricule"
+                        autocomplete="username"
+                        required
+                        autofocus>
+            </div>
+            
+            {# Mot de passe #}
+            <div class="mb-4 text-start">
+                <label for="password" class="form-label text-light">
+                    <i class="bi bi-lock"></i> Mot de passe
+                </label>
+                <input
+                    type="password" 
+                    name="_password" 
+                    id="password" 
+                    class="form-control bg-dark text-light border-secondary" 
+                    placeholder="Mot de passe"
+                    autocomplete="current-password"
+                    required>
+            </div>
+
+            {# Token CSRF — sécurité anti-falsification #}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            {# Bouton connexion #}
+            <button type="submit" class="btn btn-primary fw-boldw-100 py-2">
+                <i class="bi bi-box-arrow-in-right"></i>Se connecter
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}
