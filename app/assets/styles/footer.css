@@ -1,0 +1,31 @@
+/* ============================================================
+footer.css
+Styles du pied de page
+   ============================================================ */
+
+.qcp-footer {
+    background-color: var(--qcp-surface);
+    border-top: 1px solid var(--qcp-border);
+    font-size: 1.2rem;
+    color: var(--qcp-text);
+}
+
+.qcp-footer__brand img {
+    height: 36px;
+    width: auto;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+}
+
+.qcp-footer__brand img:hover {
+    opacity: 1;
+}
+
+/* Sur mobile, on empile les 3 zones verticalement */
+@media (max-width: 767px) {
+    .qcp-footer .container-fluid {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+}

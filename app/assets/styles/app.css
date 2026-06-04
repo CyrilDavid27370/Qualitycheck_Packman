@@ -1,1 +1,10 @@
-@import "./bootswatch.css";
+/* ============================================================
+  QualityCheck Packman — app.css
+  Fichier principal — importe tous les fichiers CSS
+   ============================================================ */
+@import 'bootswatch.css';
+@import 'general.css';
+@import 'header.css';
+@import 'nav.css';
+@import 'footer.css';
+@import 'hero.css';

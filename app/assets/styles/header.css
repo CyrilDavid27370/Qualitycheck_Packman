@@ -1,0 +1,42 @@
+/* ============================================================
+header.css
+Styles du header principal (logo + titre + user)
+   ============================================================ */
+
+.qcp-header {
+    background-color: var(--qcp-surface);
+    border-bottom: 2px solid var(--qcp-accent);
+    height: var(--qcp-header-h);
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.qcp-header__logo {
+    height: 70px;
+    width: auto;
+    transition: opacity 0.2s ease;
+}
+
+.qcp-header__logo:hover {
+    opacity: 0.85;
+}
+
+.qcp-header__title {
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+}
+
+.qcp-header__brand {
+    min-width: 120px; /* même largeur que la colonne user à droite */
+}
+
+/* Sur mobile, le titre est centré */
+@media (max-width: 767px) {
+    .qcp-header__title {
+        font-size: 1rem;
+        text-align: center;
+        flex: 1;
+        padding: 0 0.5rem;
+    }
+}

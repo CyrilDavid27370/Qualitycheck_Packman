@@ -1,0 +1,24 @@
+/* ============================================================
+nav.css
+Styles de la navbar principale
+   ============================================================ */
+
+.qcp-navbar {
+    background-color: var(--qcp-border) !important;
+}
+
+.qcp-navbar .nav-link {
+    color: var(--qcp-text-light) !important;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s ease;
+}
+
+.qcp-navbar .nav-link:hover,
+.qcp-navbar .nav-link.active {
+    color: var(--qcp-accent) !important;
+}
+
+.qcp-navbar .nav-link.active {
+    border-bottom: 2px solid var(--qcp-accent);
+}

@@ -1,0 +1,69 @@
+/* ============================================================
+hero.css
+Styles de la section hero (page d'accueil)
+Image de fond : public/images/bg_home.png
+   ============================================================ */
+
+.qcp-hero {
+    min-height: calc(100vh - var(--qcp-header-h) - var(--qcp-nav-h));
+    margin-top: 0;
+    background-image: url('/images/bg_home.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Couche sombre par dessus l'image pour lisibilité du texte */
+.qcp-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 43, 54, 0.55);
+}
+
+/* La carte est au dessus de l'overlay */
+.qcp-hero__card {
+    position: relative;
+    z-index: 1;
+    background-color: rgba(7, 54, 66, 0.85);
+    border: 1px solid var(--qcp-accent);
+    border-radius: 12px;
+    padding: 2.5rem 3rem;
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 0 30px rgba(255, 193, 7, 0.15);
+}
+
+.qcp-hero__card-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--qcp-text-light);
+}
+
+.qcp-hero__card-text {
+    color: var(--qcp-text-light);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* Responsive mobile */
+@media (max-width: 576px) {
+    .qcp-hero__card {
+        padding: 1.5rem;
+    }
+
+    .qcp-hero__card-title {
+        font-size: 1.3rem;
+    }
+
+    .qcp-hero__icons {
+        gap: 1rem !important;
+    }
+}

@@ -9,18 +9,18 @@
 
   {# Logo QCP #}
   <div class="qcp-footer_brand">
-    <img src="{{ asset('image/logo_qcp.png') }}" alt="Logo QualityCheck Packman" height="36">
+    <img src="{{ asset('images/Logo_qcp.png') }}" alt="Logo QualityCheck Packman" height="60">
   </div>
 
   {# Copyright centré #}
-  <small class="text-light">
+  <small class="text-light text-center grow">
   &copy; {{ "now"|date("Y") }} QualityCheck_<span class="text-warning">Packman</span>
   Tous droits réservés.
     &mdash; v1.0.0
   </small>
 
   {# Initiales + date à droite (visible dans le wireframe) #}
-  <small class="text-muted text-end">
+  <small class="text-muted" style="font-size: 1rem;">
     {% if app.user %}
         <span class="text-warning fw-bold">{{ app.user.matricule }}</span>
           &mdash; {{ "now"|date("d/m/Y") }}
