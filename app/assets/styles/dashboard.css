@@ -1,0 +1,24 @@
+/* ============================================================
+  dashboard.css
+  Styles de la page dashboard
+   ============================================================ */
+
+.qcp-dashboard {
+  min-height: calc(100vh - var(--qcp-header-h) - var(--qcp-nav-h) - 60px);
+}
+
+.qcp-dashboard__content {
+  background-color: var(--qcp-surface);
+  border: 1px solid var(--qcp-border);
+  border-radius: 8px;
+  min-height: 400px;
+  padding: 2px;
+}
+
+/* Titre de section */
+.qcp-dashboard h2 {
+  font-size: 1.6rem;
+  border-bottom: 2px solid var(--qcp-accent);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
