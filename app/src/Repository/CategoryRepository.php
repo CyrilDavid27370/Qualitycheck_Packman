@@ -15,29 +15,17 @@ class CategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Category::class);
     }
-
-    //    /**
-    //     * @return Category[] Returns an array of Category objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Category
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    
+     // Récupère toutes les catégories ET leurs types en une seule requête SQL
+    // grâce au JOIN. Sans ce JOIN, Doctrine ferait une requête supplémentaire
+    // pour chaque catégorie (problème N+1 — très coûteux en performance).
+    public function findAllWithTypes(): array
+    {
+        return $this->createQueryBuilder('c')
+        ->leftJoin('c.categoryTypes', 'ct') // JOIN sur la relation OneToMany
+        ->addSelect('ct') // inclut les types dans le résultat
+        ->orderBy('c.id', 'ASC')
+        ->getQuery()
+        ->getResult();
+    }
 }
