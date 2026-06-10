@@ -36,74 +36,11 @@
 
     {% if app.user %}
 
-    {# Moteur thermique — dropdown #}
-    <li class="nav-item dropdown">
-      <a href="#" class="nav-link dropdown-toggle"
-        role="button" 
-        data-bs-toggle="dropdown" 
-        aria-expanded="false">
-        Moteur thermique
-      </a>
-      <ul class="dropdown-menu">
-        <li><a href="#" class="dropdown-item">Moteur</a></li>
-        <li><a href="#" class="dropdown-item">Boîte de vitesses</a></li>
-      </ul> 
-    </li>
-
-    {# GMPE — dropdown #}
-    <li class="nav-item dropdown">
-      <a href="#" class="nav-link dropdown-toggle"
-        role="button" 
-        data-bs-toggle="dropdown" 
-        aria-expanded="false">
-        GMPE
-      </a>
-      <ul class="dropdown-menu">
-        <li><a href="#" class="dropdown-item">Moteur</a></li>
-        <li><a href="#" class="dropdown-item">Stator</a></li>
-        <li><a href="#" class="dropdown-item">Rotor</a></li>
-        <li><a href="#" class="dropdown-item">PEB</a></li>
-        <li><a href="#" class="dropdown-item">Reducteur</a></li>
-      </ul> 
-    </li>
-
-    {# E-Motor — dropdown #}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false">
-            E-Motor
-          </a>
-          <ul class="dropdown-menu dropdown-menu-dark">
-            <li><a class="dropdown-item" href="#">Moteur AFM</a></li>
-            <li><a class="dropdown-item" href="#">Carter C-MOT</a></li>
-            <li><a class="dropdown-item" href="#">Carter C-FERM</a></li>
-            <li><a class="dropdown-item" href="#">Stator AFM</a></li>
-            <li><a class="dropdown-item" href="#">Rotor AFM</a></li>
-          </ul>
-        </li>
-    
-    {# Module — dropdown #}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false">
-              Module
-          </a>
-          <ul class="dropdown-menu dropdown-menu-dark">
-            <li><a class="dropdown-item" href="#">Modules GPEC batteries</a></li>
-            <li><a class="dropdown-item" href="#">Modules PVAL</a></li>
-          </ul>
-        </li>
-
-      {# Batterie — lien simple (pas de sous-catégories pour l'instant) #}
+        {# Dashboard — utilisateur connecté #}
         <li class="nav-item">
-          <a href="#" class="nav-link">
-            Batterie
+          <a href="{{ path('app_dashboard') }}"
+            class="nav-link {% if app.request.attributes.get('_route') starts with 'app_dashboard' %}active{% endif %}">
+            <i class="bi bi-speedometer2"></i>Dashboard
           </a>
         </li>
 
