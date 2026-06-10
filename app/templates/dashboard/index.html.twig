@@ -2,78 +2,120 @@
 
 {% block title %}Dashboard — QualityCheck Packman{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}">
+{% endblock %}
+
 {% block body %}
 
-<div class="qcp-dashboard container-fluid py-4">
+{% set categoryColors = {
+    'Moteur thermique' : 'danger',
+    'GMPE'             : 'primary',
+    'E-Motor'          : 'success',
+    'Module'           : 'info',
+    'Batterie'         : 'warning'
+} %}
 
- {# ── En-tête ─────────────────────────────────────────────
-    col-12 sur tous les écrans
-    Titre réduit sur mobile (fs-5), pleine taille sur desktop
-    ──────────────────────────────────────────────────────────#}
+<div class="qcp-dashboard container-fluid py-3 py-md-4">
 
+    {# En-tête #}
     <div class="row mb-3 mb-md-4">
         <div class="col-12 text-center">
-            <h2 class="text-warning fw-bold fs-5 fs-md-4 fs-lg-2">
+            <h2 class="text-warning fw-bold">
                 <i class="bi bi-speedometer2"></i>
                 Tableau de bord
             </h2>
-            <p class="text-primary small mb-0">
-                Bienvenue 
-                {# app.user.firstname → getFirstname()
-                app.user.lastname  → getLastname()
-                Fallback sur le matricule si nom/prénom non renseignés #}
+            <p class="text-warning small mb-0">
+                Bienvenue
                 {% if app.user.firstname and app.user.lastname %}
                     <strong class="text-light">
-                        {{ app.user.firstName }} {{ app.user.lastName }}
+                        {{ app.user.firstname }} {{ app.user.lastname }}
                     </strong>
                 {% else %}
                     <strong class="text-light">
-                        {{ app.user.userIdentifier}}
+                        {{ app.user.userIdentifier }}
                     </strong>
                 {% endif %}
-                - Sélectionner une catégorie dans le menu pour commencer.
+                — Sélectionnez une catégorie pour commencer.
             </p>
         </div>
     </div>
 
-    {# ── Zone de contenu principale ───────────────────────────
-    Sur mobile    (< md) : pleine largeur, padding réduit
-    Sur tablette  (md)   : pleine largeur, padding normal
-    Sur desktop   (lg+)  : pleine largeur, padding confortable
-    Le min-height est géré dans dashboard.css via --qcp-*
-    ──────────────────────────────────────────────────────────#}
+    {# Barre des catégories — dans le dashboard uniquement #}
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="qcp-category-bar d-flex flex-wrap gap-2 justify-content-center">
 
+                {% for category in categories %}
+                    {% set color = categoryColors[category.name] ?? 'secondary' %}
+
+                    {% if category.categoryTypes|length > 1 %}
+
+                        <div class="dropdown">
+                            <button class="btn btn-{{ color }} dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                {{ category.name }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                {% for type in category.categoryTypes %}
+                                    <li>
+                                        <a href="{{ path('app_dashboard_category', { id: type.id }) }}"
+                                            class="dropdown-item text-light">
+                                            <span class="badge rounded-pill border border-{{ color }} text-{{ color }} me-2">
+                                                {{ type.name }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                    {% elseif category.categoryTypes|length == 1 %}
+
+                        {% set type = category.categoryTypes.first() %}
+                        <a href="{{ path('app_dashboard_category', { id: type.id }) }}"
+                            class="btn btn-{{ color }}">
+                            {{ category.name }}
+                        </a>
+
+                    {% else %}
+
+                        <button class="btn btn-{{ color }} disabled" disabled>
+                            {{ category.name }}
+                        </button>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+    {# Zone de contenu principale #}
     <div class="row">
         <div class="col-12">
             <div class="qcp-dashboard__content">
-            
-                {% block dashboard_content %}
-                
-                {# ── Placeholder ─────────────────────────────────────
-                    Centré verticalement et horizontalement sur tous
-                    les écrans grâce aux classes Bootstrap d-flex
-                    ────────────────────────────────────────────────────#}
-                <div class="d-flex flex-column align-items-center 
-                            justify-content-center text-center
-                            py-4 py-md-5 text-muted qcp-welcome-card">
-                
-                    <i class="bi bi-clipboard2-check text-warning opacity-50
-                                fs-1 fs-md-1 mb-3">
-                    </i>
 
-                    <p class="mb-0 px-3 px-md-0">
-                        Aucun certificat sélectionné. <br>
-                        Choisisez une categorie dans la barre de navigation.
-                    </p>
-                </div>
-                
+                {% block dashboard_content %}
+                    <div class="d-flex flex-column align-items-center
+                                justify-content-center text-center
+                                py-4 py-md-5 qcp-welcome-card">
+                        <i class="bi bi-clipboard2-check text-warning opacity-50
+                                fs-1 mb-3"></i>
+                        <p class="text-muted mb-0 px-3 px-md-0">
+                            Aucun certificat sélectionné.<br>
+                            Choisissez une catégorie ci-dessus.
+                        </p>
+                    </div>
                 {% endblock %}
-                
+
             </div>
         </div>
     </div>
 
 </div>
-
 
 {% endblock %}
