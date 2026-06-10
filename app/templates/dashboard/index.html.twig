@@ -13,7 +13,7 @@
     'GMPE'             : 'primary',
     'E-Motor'          : 'success',
     'Module'           : 'info',
-    'Batterie'         : 'warning'
+    'Batterie'         : 'secondary'
 } %}
 
 <div class="qcp-dashboard container-fluid py-3 py-md-4">
@@ -47,7 +47,7 @@
             <div class="qcp-category-bar d-flex flex-wrap gap-2 justify-content-center">
 
                 {% for category in categories %}
-                    {% set color = categoryColors[category.name] ?? 'secondary' %}
+                    {% set color = categoryColors[category.name] ?? 'danger' %}
 
                     {% if category.categoryTypes|length > 1 %}
 

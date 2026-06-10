@@ -25,18 +25,51 @@ Styles du header principal (logo + titre + user)
 .qcp-header__title {
     font-size: 1.5rem;
     letter-spacing: 0.05em;
+    flex: 1;
+    text-align: center;
 }
 
 .qcp-header__brand {
-    min-width: 120px; /* même largeur que la colonne user à droite */
+    min-width: 80px;
 }
 
-/* Sur mobile, le titre est centré */
-@media (max-width: 767px) {
+.qcp-header__user {
+    min-width: 80px;
+    justify-content: flex-end;
+}
+
+.qcp-header__matricule {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+
+    .qcp-header {
+        height: auto;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+    }
+
+    .qcp-header__logo {
+        height: 45px;
+    }
+
     .qcp-header__title {
-        font-size: 1rem;
-        text-align: center;
-        flex: 1;
-        padding: 0 0.5rem;
+        font-size: 0.85rem;
+        padding: 0 0.25rem;
+    }
+
+    .qcp-header__brand {
+        min-width: 50px;
+    }
+
+    .qcp-header__user {
+        min-width: 50px;
+    }
+
+    .qcp-header__matricule {
+        font-size: 0.7rem; /* matricule plus petit sur mobile */
     }
 }
