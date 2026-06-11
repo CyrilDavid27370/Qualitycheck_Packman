@@ -17,10 +17,10 @@ class Certificate
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $delivery_site = null;
+    private ?string $deliverySite = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $GPS_ref = null;
+    private ?string $gpsRef = null;
 
     #[ORM\Column(length: 50)]
     private ?string $round = null;
@@ -29,16 +29,16 @@ class Certificate
     private ?string $project = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $delivery_date = null;
+    private ?\DateTime $deliveryDate = null;
 
     #[ORM\Column]
-    private ?bool $has_derogation = null;
+    private ?bool $hasDerogation = null;
 
     #[ORM\Column]
-    private ?bool $is_hare = null;
+    private ?bool $isHare = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    private ?string $association_derogation = null;
+    private ?string $associatedDerogation = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $restrictive = null;
@@ -50,10 +50,10 @@ class Certificate
     private ?string $comments = null;
 
     #[ORM\Column]
-    private ?bool $ready_to_deliver = null;
+    private ?bool $readyToDeliver = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'certificates')]
     #[ORM\JoinColumn(nullable: false)]
@@ -81,24 +81,24 @@ class Certificate
 
     public function getDeliverySite(): ?string
     {
-        return $this->delivery_site;
+        return $this->deliverySite;
     }
 
-    public function setDeliverySite(string $delivery_site): static
+    public function setDeliverySite(string $deliverySite): static
     {
-        $this->delivery_site = $delivery_site;
+        $this->deliverySite = $deliverySite;
 
         return $this;
     }
 
     public function getGPSRef(): ?string
     {
-        return $this->GPS_ref;
+        return $this->gpsRef;
     }
 
-    public function setGPSRef(string $GPS_ref): static
+    public function setGPSRef(string $gpsRef): static
     {
-        $this->GPS_ref = $GPS_ref;
+        $this->gpsRef = $gpsRef;
 
         return $this;
     }
@@ -129,48 +129,48 @@ class Certificate
 
     public function getDeliveryDate(): ?\DateTime
     {
-        return $this->delivery_date;
+        return $this->deliveryDate;
     }
 
-    public function setDeliveryDate(\DateTime $delivery_date): static
+    public function setDeliveryDate(\DateTime $deliveryDate): static
     {
-        $this->delivery_date = $delivery_date;
+        $this->deliveryDate = $deliveryDate;
 
         return $this;
     }
 
     public function hasDerogation(): ?bool
     {
-        return $this->has_derogation;
+        return $this->hasDerogation;
     }
 
-    public function setHasDerogation(bool $has_derogation): static
+    public function setHasDerogation(bool $hasDerogation): static
     {
-        $this->has_derogation = $has_derogation;
+        $this->hasDerogation = $hasDerogation;
 
         return $this;
     }
 
     public function isHare(): ?bool
     {
-        return $this->is_hare;
+        return $this->isHare;
     }
 
-    public function setIsHare(bool $is_hare): static
+    public function setIsHare(bool $isHare): static
     {
-        $this->is_hare = $is_hare;
+        $this->isHare = $isHare;
 
         return $this;
     }
 
-    public function getAssociationDerogation(): ?string
+    public function getAssociatedDerogation(): ?string
     {
-        return $this->association_derogation;
+        return $this->associatedDerogation;
     }
 
-    public function setAssociationDerogation(?string $association_derogation): static
+    public function setAssociatedDerogation(?string $associatedDerogation): static
     {
-        $this->association_derogation = $association_derogation;
+        $this->associatedDerogation = $associatedDerogation;
 
         return $this;
     }
@@ -213,24 +213,24 @@ class Certificate
 
     public function isReadyToDeliver(): ?bool
     {
-        return $this->ready_to_deliver;
+        return $this->readyToDeliver;
     }
 
-    public function setReadyToDeliver(bool $ready_to_deliver): static
+    public function setReadyToDeliver(bool $readyToDeliver): static
     {
-        $this->ready_to_deliver = $ready_to_deliver;
+        $this->readyToDeliver = $readyToDeliver;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
