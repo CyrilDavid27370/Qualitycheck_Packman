@@ -5,9 +5,11 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\CategoryType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class DashboardFixtures extends Fixture
+// DependentFixtureInterface garantit que UserFixtures est chargée AVANT DashboardFixtures
+class DashboardFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -51,5 +53,11 @@ class DashboardFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    // Déclare que UserFixtures doit être chargée en premier
+    public function getDependencies(): array 
+    {
+        return [UserFixtures::class];
     }
 }

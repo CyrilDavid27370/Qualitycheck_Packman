@@ -27,9 +27,9 @@ class UserFixtures extends Fixture
         $analyste->setFirstname('Christophe');
         $analyste->setLastname('Aviceau');
         $analyste->setRoles(['ROLE_USER']);
-        $analyste->setActive('true');
+        $analyste->setActive(true);
         $analyste->setPassword(
-            $this->passwordHasher->hashPassword($analyste, 'Test1234')
+            $this->passwordHasher->hashPassword($analyste, 'Test@123456789')
         );
         $manager->persist($analyste);
 
@@ -42,9 +42,9 @@ class UserFixtures extends Fixture
         $admin->setFirstname('Cyril');
         $admin->setLastname('David');
         $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setActive('true');
+        $admin->setActive(true);
         $admin->setPassword(
-            $this->passwordHasher->hashPassword($admin, 'Admin1234')
+            $this->passwordHasher->hashPassword($admin, 'Admin@123456789')
         );
         $manager->persist($admin);
 
