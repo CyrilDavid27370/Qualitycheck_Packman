@@ -1,0 +1,129 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Détail utilisateur — Admin QCP{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/admin.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="qcp-admin container-fluid py-3 py-md-4">
+
+    {# En-tête #}
+    <div class="row mb-4">
+        <div class="col-12 d-flex align-items-center gap-3">
+            <a href="{{ path('app_admin_user_index') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <h2 class="text-warning fw-bold mb-0 flex-grow-1 text-center ">
+                <i class="bi bi-person-circle"></i>
+                {{ user.firstname }} {{ user.lastname }}
+            </h2>
+        </div>
+    </div>
+
+    {# Messages flash #}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="bi bi-check-circle me-2"></i>{{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle me-2"></i>{{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {# Fiche utilisateur #}
+    <div class="row">
+        <div class="col-12">
+            <div class="qcp-admin__form-card">
+
+                {# Informations personnelles #}
+                <h5 class="text-warning mb-3">
+                    <i class="bi bi-person me-2"></i>Informations personnelles
+                </h5>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 text-secondary">Nom</div>
+                    <div class="col-sm-8 text-light fw-bold">{{ user.lastname }}</div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 text-secondary">Prénom</div>
+                    <div class="col-sm-8 text-light fw-bold">{{ user.firstname }}</div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 text-secondary">Matricule</div>
+                    <div class="col-sm-8">
+                        <span class="text-warning fw-bold">{{ user.matricule }}</span>
+                    </div>
+                </div>
+
+                <hr class="border-secondary my-3">
+
+                {# Rôle et statut #}
+                <h5 class="text-warning mb-3">
+                    <i class="bi bi-shield me-2"></i>Accès et statut
+                </h5>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 text-secondary">Rôle</div>
+                    <div class="col-sm-8">
+                        {% if 'ROLE_ADMIN' in user.roles %}
+                            <span class="badge bg-danger">
+                                <i class="bi bi-shield-lock me-1"></i>Administrateur
+                            </span>
+                        {% else %}
+                            <span class="badge bg-primary">
+                                <i class="bi bi-person me-1"></i>Analyste Qualité
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-4 text-secondary">Statut</div>
+                    <div class="col-sm-8">
+                        {% if user.active %}
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle me-1"></i>Actif
+                            </span>
+                        {% else %}
+                            <span class="badge bg-secondary">
+                                <i class="bi bi-x-circle me-1"></i>Inactif
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <hr class="border-secondary my-3">
+
+                {# Actions #}
+                <div class="d-flex gap-2">
+                    <a href="{{ path('app_admin_user_save', { id: user.id }) }}"
+                      class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Modifier
+                    </a>
+                    <form action="{{ path('app_admin_user_delete', { id: user.id }) }}"
+                          method="POST"
+                          class="d-inline"
+                          onsubmit="return confirm('Supprimer {{ user.firstname }} {{ user.lastname }} ?')">
+                        <input type="hidden" name="_token"
+                              value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="bi bi-trash"></i> Supprimer
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
