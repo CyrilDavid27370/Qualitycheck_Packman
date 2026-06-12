@@ -15,11 +15,11 @@ class DashboardFixtures extends Fixture implements DependentFixtureInterface
     {
         $data = [
             'Moteur thermique'=> [
-                'Moteur',
+                'Moteur thermique',
                 'Boite de vitesse',
             ],
             'GMPE' => [
-                'Moteur',
+                'Moteur GMPE',
                 'Stator',
                 'Rotor',
                 'PEB',
