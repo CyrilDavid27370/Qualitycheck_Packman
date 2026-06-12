@@ -1,0 +1,60 @@
+/* ============================================================
+   admin.css
+   Styles de l'espace administration
+   ============================================================ */
+
+/* Zone principale admin */
+.qcp-admin {
+    min-height: calc(100vh - var(--qcp-header-h) - var(--qcp-nav-h) - 60px);
+}
+
+/* En-tête de section */
+.qcp-admin h2 {
+    font-size: 1.6rem;
+    border-bottom: 2px solid var(--qcp-accent);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Table des utilisateurs */
+.qcp-admin .table {
+    border-color: var(--qcp-border);
+}
+
+.qcp-admin .table thead th {
+    color: var(--qcp-accent);
+    border-bottom-color: var(--qcp-border);
+    font-weight: 600;
+}
+
+/* Card formulaire */
+.qcp-admin__form-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: var(--qcp-surface);
+    border: 1px solid var(--qcp-border);
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+/* ── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+    .qcp-admin {
+        min-height: auto;
+    }
+
+    .qcp-admin__form-card {
+        padding: 1rem;
+    }
+
+    .qcp-admin h2 {
+        font-size: 1.2rem;
+    }
+
+    .qcp-admin .table td,
+    .qcp-admin .table th {
+        white-space: nowrap;
+        vertical-align: middle;
+        padding: 0.5rem 0.75rem;
+    }
+}

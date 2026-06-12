@@ -7,6 +7,7 @@ import './js/nav.js';
 import './js/hero.js';
 import './js/footer.js';
 import './js/dashboard.js';
+import './js/admin.js';
 
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
