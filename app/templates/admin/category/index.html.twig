@@ -2,14 +2,9 @@
 
 {% block title %}Gestion des catégories — Admin QCP{% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('styles/admin.css') }}">
-{% endblock %}
-
 {% block body %}
 <div class="qcp-admin container-fluid py-3 py-md-4">
 
-    {# Mapping couleurs — cohérent avec le dashboard #}
     {% set categoryColors = {
         'Moteur thermique' : 'danger',
         'GMPE'             : 'primary',
@@ -56,7 +51,7 @@
                             <thead>
                                 <tr>
                                     <th>Catégorie</th>
-                                    <th>Types associés</th>
+                                    <th class="d-none d-md-table-cell">Types associés</th>
                                     <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
@@ -64,23 +59,59 @@
                                 {% for category in categories %}
                                     {% set color = categoryColors[category.name] ?? 'secondary' %}
                                     <tr>
-                                        <td class="fw-bold text-{{ color }}">
+                                        <td class="fw-bold text-{{ color }} align-middle">
                                             {{ category.name }}
                                         </td>
+
+                                        {# Colonne types — visible sur tous les écrans #}
                                         <td>
-                                            {% for type in category.categoryTypes %}
-                                                <span class="badge border border-{{ color }} text-{{ color }} me-1">
-                                                    {{ type.name }}
-                                                </span>
-                                            {% else %}
-                                                <span class="text-muted">Aucun type</span>
-                                            {% endfor %}
+                                            <div class="row g-1">
+                                                {% for type in category.categoryTypes %}
+                                                    <div class="col-12 col-md-4">
+                                                        <div class="d-flex align-items-center gap-1">
+                                                            <span class="badge border border-{{ color }} text-{{ color }} text-truncate w-100">
+                                                            {{ type.name }}
+                                                            </span>
+                                                            <a href="{{ path('app_admin_categoryType_save', { id: type.id }) }}"
+                                                                class="btn btn-sm btn-outline-warning py-0 px-1 flex-shrink-0"
+                                                                title="Modifier {{ type.name }}">
+                                                                    <i class="bi bi-pencil"></i>
+                                                            </a>
+                                                            <form action="{{ path('app_admin_categoryType_delete', { id: type.id }) }}"
+                                                                    method="POST"
+                                                                    class="d-inline flex-shrink-0"
+                                                                    onsubmit="return confirm('Supprimer le type {{ type.name }} ?')">
+                                                                <input type="hidden" name="_token"
+                                                                        value="{{ csrf_token('delete_type_' ~ type.id) }}">
+                                                                <button type="submit"
+                                                                        class="btn btn-sm btn-outline-danger py-0 px-1"
+                                                                        title="Supprimer {{ type.name }}">
+                                                                            <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="col-12">
+                                                        <span class="text-muted">Aucun type</span>
+                                                    </div>
+                                                {% endfor %}
+
+                                                <div class="col-12 mt-1">
+                                                    <a href="{{ path('app_admin_categoryType_save') }}"
+                                                        class="btn btn-sm btn-outline-success">
+                                                            <i class="bi bi-plus-lg"></i> Ajouter un type
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </td>
-                                        <td class="text-end">
+
+                                        {# Actions catégorie #}
+                                        <td class="text-end align-middle">
                                             <a href="{{ path('app_admin_category_save', { id: category.id }) }}"
                                                 class="btn btn-sm btn-outline-warning me-1"
                                                 title="Modifier">
-                                                <i class="bi bi-pencil"></i>
+                                                    <i class="bi bi-pencil"></i>
                                             </a>
                                             <form action="{{ path('app_admin_category_delete', { id: category.id }) }}"
                                                     method="POST"

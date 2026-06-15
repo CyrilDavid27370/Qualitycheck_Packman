@@ -92,7 +92,7 @@ final class CategoryController extends AbstractController
             return $this->redirectToRoute('app_admin_category_index');
         }
 
-        return $this->render('admin/category/save_type.html.twig', [
+        return $this->render('admin/categoryType/save_type.html.twig', [
             'form' => $form,
             'isEdit' => $isEdit,
         ]);

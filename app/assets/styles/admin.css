@@ -16,7 +16,7 @@
     margin-bottom: 1.5rem;
 }
 
-/* Table des utilisateurs */
+/* Table */
 .qcp-admin .table {
     border-color: var(--qcp-border);
 }
@@ -25,6 +25,13 @@
     color: var(--qcp-accent);
     border-bottom-color: var(--qcp-border);
     font-weight: 600;
+}
+
+/* Empêche le retour à la ligne dans toutes les cellules */
+.qcp-admin .table td,
+.qcp-admin .table th {
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
 /* Card formulaire */
@@ -53,8 +60,6 @@
 
     .qcp-admin .table td,
     .qcp-admin .table th {
-        white-space: nowrap;
-        vertical-align: middle;
         padding: 0.5rem 0.75rem;
     }
 }
