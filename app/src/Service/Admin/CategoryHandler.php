@@ -17,7 +17,7 @@ class CategoryHandler
 
   public function getAllCategories(): array
   {
-    return $this->categoryRepository->findAllWithType();
+    return $this->categoryRepository->findAllWithTypes();
   }
 
   public function getCategoryById(int $id): Category

@@ -9,6 +9,15 @@
 {% block body %}
 <div class="qcp-admin container-fluid py-3 py-md-4">
 
+    {# Mapping couleurs — cohérent avec le dashboard #}
+    {% set categoryColors = {
+        'Moteur thermique' : 'danger',
+        'GMPE'             : 'primary',
+        'E-Motor'          : 'success',
+        'Module'           : 'info',
+        'Batterie'         : 'warning'
+    } %}
+
     {# En-tête #}
     <div class="row mb-4">
         <div class="col-12 d-flex justify-content-between align-items-center">
@@ -53,13 +62,14 @@
                             </thead>
                             <tbody>
                                 {% for category in categories %}
+                                    {% set color = categoryColors[category.name] ?? 'secondary' %}
                                     <tr>
-                                        <td class="text-warning fw-bold">
+                                        <td class="fw-bold text-{{ color }}">
                                             {{ category.name }}
                                         </td>
                                         <td>
                                             {% for type in category.categoryTypes %}
-                                                <span class="badge bg-secondary me-1">
+                                                <span class="badge border border-{{ color }} text-{{ color }} me-1">
                                                     {{ type.name }}
                                                 </span>
                                             {% else %}
@@ -67,13 +77,11 @@
                                             {% endfor %}
                                         </td>
                                         <td class="text-end">
-                                            {# Bouton modifier #}
                                             <a href="{{ path('app_admin_category_save', { id: category.id }) }}"
                                                 class="btn btn-sm btn-outline-warning me-1"
                                                 title="Modifier">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            {# Bouton supprimer #}
                                             <form action="{{ path('app_admin_category_delete', { id: category.id }) }}"
                                                     method="POST"
                                                     class="d-inline"
