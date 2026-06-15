@@ -1,20 +1,108 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %}Hello Admin/CategoryController!{% endblock %}
+{% block title %}Gestion des catégories — Admin QCP{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/admin.css') }}">
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="qcp-admin container-fluid py-3 py-md-4">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {# En-tête #}
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h2 class="text-warning fw-bold mb-0">
+                <i class="bi bi-tags"></i> Catégories
+            </h2>
+            <a href="{{ path('app_admin_category_save') }}" class="btn btn-warning">
+                <i class="bi bi-plus-lg"></i>
+                <span class="d-none d-md-inline">Nouvelle catégorie</span>
+            </a>
+        </div>
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/var/www/html/src/Controller/Admin/CategoryController.php</code></li>
-        <li>Your template at <code>/var/www/html/templates/admin/category/index.html.twig</code></li>
-    </ul>
+    {# Messages flash #}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="bi bi-check-circle me-2"></i>{{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle me-2"></i>{{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {# Table des catégories #}
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-dark border-secondary shadow">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Catégorie</th>
+                                    <th>Types associés</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for category in categories %}
+                                    <tr>
+                                        <td class="text-warning fw-bold">
+                                            {{ category.name }}
+                                        </td>
+                                        <td>
+                                            {% for type in category.categoryTypes %}
+                                                <span class="badge bg-secondary me-1">
+                                                    {{ type.name }}
+                                                </span>
+                                            {% else %}
+                                                <span class="text-muted">Aucun type</span>
+                                            {% endfor %}
+                                        </td>
+                                        <td class="text-end">
+                                            {# Bouton modifier #}
+                                            <a href="{{ path('app_admin_category_save', { id: category.id }) }}"
+                                                class="btn btn-sm btn-outline-warning me-1"
+                                                title="Modifier">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            {# Bouton supprimer #}
+                                            <form action="{{ path('app_admin_category_delete', { id: category.id }) }}"
+                                                    method="POST"
+                                                    class="d-inline"
+                                                    onsubmit="return confirm('Supprimer la catégorie {{ category.name }} ?')">
+                                                <input type="hidden" name="_token"
+                                                        value="{{ csrf_token('delete_category_' ~ category.id) }}">
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        title="Supprimer">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted py-5">
+                                            <i class="bi bi-tags fs-3 d-block mb-2 opacity-50"></i>
+                                            Aucune catégorie trouvée.
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 {% endblock %}
