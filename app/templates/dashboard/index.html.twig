@@ -2,10 +2,6 @@
 
 {% block title %}Dashboard — QualityCheck Packman{% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}">
-{% endblock %}
-
 {% block body %}
 
 {% set categoryColors = {
@@ -41,7 +37,7 @@
         </div>
     </div>
 
-    {# Barre des catégories — dans le dashboard uniquement #}
+    {# Barre des catégories #}
     <div class="row mb-3">
         <div class="col-12">
             <div class="qcp-category-bar d-flex flex-wrap gap-2 justify-content-center">
@@ -50,7 +46,6 @@
                     {% set color = categoryColors[category.name] ?? 'danger' %}
 
                     {% if category.categoryTypes|length > 1 %}
-
                         <div class="dropdown">
                             <button class="btn btn-{{ color }} dropdown-toggle"
                                     type="button"
@@ -62,7 +57,7 @@
                                 {% for type in category.categoryTypes %}
                                     <li>
                                         <a href="{{ path('app_dashboard_category', { id: type.id }) }}"
-                                            class="dropdown-item text-light">
+                                            class="dropdown-item text-light {% if selectedType is defined and selectedType.id == type.id %}active{% endif %}">
                                             <span class="badge rounded-pill border border-{{ color }} text-{{ color }} me-2">
                                                 {{ type.name }}
                                             </span>
@@ -73,19 +68,16 @@
                         </div>
 
                     {% elseif category.categoryTypes|length == 1 %}
-
                         {% set type = category.categoryTypes.first() %}
                         <a href="{{ path('app_dashboard_category', { id: type.id }) }}"
-                            class="btn btn-{{ color }}">
+                            class="btn btn-{{ color }} {% if selectedType is defined and selectedType.id == type.id %}active{% endif %}">
                             {{ category.name }}
                         </a>
 
                     {% else %}
-
                         <button class="btn btn-{{ color }} disabled" disabled>
                             {{ category.name }}
                         </button>
-
                     {% endif %}
 
                 {% endfor %}
@@ -99,18 +91,89 @@
         <div class="col-12">
             <div class="qcp-dashboard__content">
 
-                {% block dashboard_content %}
+                {% if selectedType is defined and selectedType %}
+
+                    {# En-tête de la zone contenu #}
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                        <h5 class="text-warning fw-bold mb-0">
+                            <i class="bi bi-list-check me-2"></i>
+                            {{ selectedType.category.name }} — {{ selectedType.name }}
+                        </h5>
+                        <a href="{{ path('app_certificate_new', { categoryTypeId: selectedType.id }) }}"
+                            class="btn btn-warning">
+                            <i class="bi bi-clipboard2-plus me-1"></i>
+                            Nouveau certificat
+                        </a>
+                    </div>
+
+                    {# Liste des certificats #}
+                    {% if certificates is defined and certificates|length > 0 %}
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Référence GPS</th>
+                                        <th>Affaire</th>
+                                        <th>Boucle</th>
+                                        <th>Date livraison</th>
+                                        <th>Bon à livrer</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for certificate in certificates %}
+                                        <tr>
+                                            <td class="text-warning fw-bold">
+                                                {{ certificate.gpsRef }}
+                                            </td>
+                                            <td>{{ certificate.project }}</td>
+                                            <td>{{ certificate.round }}</td>
+                                            <td>{{ certificate.deliveryDate|date('d/m/Y') }}</td>
+                                            <td>
+                                                {% if certificate.readyToDeliver %}
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle me-1"></i>Oui
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">
+                                                        <i class="bi bi-x-circle me-1"></i>Non
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="{{ path('app_certificate_show', { id: certificate.id }) }}"
+                                                    class="btn btn-sm btn-outline-info"
+                                                    title="Voir le détail">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    {% else %}
+                        {# Aucun certificat pour ce type #}
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-clipboard2 fs-1 opacity-50 d-block mb-3"></i>
+                            <p class="mb-0">Aucun certificat pour ce type.<br>
+                            Créez le premier en cliquant sur "Nouveau certificat".</p>
+                        </div>
+                    {% endif %}
+
+                {% else %}
+                    {# Placeholder — aucune catégorie sélectionnée #}
                     <div class="d-flex flex-column align-items-center
                                 justify-content-center text-center
                                 py-4 py-md-5 qcp-welcome-card">
-                        <i class="bi bi-clipboard2-check text-warning opacity-50
-                                fs-1 mb-3"></i>
+                        <i class="bi bi-clipboard2-check text-warning opacity-50 fs-1 mb-3"></i>
                         <p class="text-muted mb-0 px-3 px-md-0">
                             Aucun certificat sélectionné.<br>
                             Choisissez une catégorie ci-dessus.
                         </p>
                     </div>
-                {% endblock %}
+                {% endif %}
 
             </div>
         </div>
