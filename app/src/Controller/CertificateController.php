@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Certificate;
 use App\Form\CertificateFormType;
+use App\Service\CertificateHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ final class CertificateController extends AbstractController
     public function new(Request $request, int $categoryTypeId): Response
     {   
         $categoryType = $this->certificateHandler->getCategoryTypeById($categoryTypeId);
-        $criterions = $this->certificateHandler->getCriterionsByCategoryType($categoryTypeId);
+        $criterions = $this->certificateHandler->getCriterionsByCategoryType($categoryType);
 
         $certificate = new Certificate();
         $certificate->setCategoryType($categoryType);
@@ -42,7 +43,7 @@ final class CertificateController extends AbstractController
 
             $this->addFlash('success', 'Certificat créé avec succès.');
 
-            return $this->redirectToRoute('app-certificate_show', [
+            return $this->redirectToRoute('app_certificate_show', [
                 'id' => $certificate->getId(),
             ]);
 
