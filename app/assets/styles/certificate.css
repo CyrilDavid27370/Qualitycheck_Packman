@@ -1,0 +1,40 @@
+/* ============================================================
+   certificate.css
+   Styles du formulaire de certificat
+   ============================================================ */
+
+.qcp-certificate {
+    min-height: calc(100vh - var(--qcp-header-h) - var(--qcp-nav-h) - 60px);
+}
+
+.qcp-certificate__card {
+    background-color: var(--qcp-surface);
+    border: 1px solid var(--qcp-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Lignes critères — transition douce */
+.criterion-row {
+    transition: background-color 0.2s ease;
+}
+
+/* Boutons SO/C/NC */
+.rating-group .btn {
+    min-width: 45px;
+    font-weight: 600;
+}
+
+/* ── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+    .qcp-certificate__card {
+        padding: 1rem;
+    }
+
+    .rating-group .btn {
+        min-width: 38px;
+        font-size: 0.8rem;
+        padding: 0.25rem 0.4rem;
+    }
+}
