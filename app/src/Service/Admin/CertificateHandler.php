@@ -23,7 +23,7 @@ class CertificateHandler
 
   public function getCategoryTypeById(int $id): CategoryType
   {
-    $type = $this->categoryTypeRepository->find($id);
+    $type =$this->categoryTypeRepository->find($id);
 
     return $type;
   }
