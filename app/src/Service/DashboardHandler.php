@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\CategoryTypeRepository;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Repository\CertificateRepository;
 
 // Ce service centralise toute la logique métier du dashboard.
 // Le contrôleur ne fait qu'appeler ces méthodes et passer les données à Twig.
@@ -13,7 +13,8 @@ class DashboardHandler
 {
     public function __construct(
         private  CategoryRepository     $categoryRepository,
-        private  CategoryTypeRepository $categoryTypeRepository
+        private  CategoryTypeRepository $categoryTypeRepository,
+        private CertificateRepository $certificateRepository,
     ) {}
 
     // Récupère toutes les catégories avec leurs types associés.
@@ -31,12 +32,14 @@ class DashboardHandler
     {
         $type = $this->categoryTypeRepository->find($id);
 
-        if (!$type) {
-            throw new NotFoundHttpException(
-                sprintf('Le type de catégorie #%d est introuvable.', $id)
-            );
-        }
-
         return $type;
+    }
+
+    public function getCertificatesByCategoryType(CategoryType $type): array
+    {
+        return $this->certificateRepository->findBy(
+            ['categoryType' => $type],
+            ['createdAt' => 'DESC']
+        );
     }
 }

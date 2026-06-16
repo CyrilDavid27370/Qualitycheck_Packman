@@ -30,10 +30,12 @@ final class DashboardController extends AbstractController
         // Le service gère la récupération ET lance une exception si introuvable
         $selectedType = $this->dashboardHandler->getCategoryTypeById($id);
         $categories = $this->dashboardHandler->getCategories();
+        $certificates = $this->dashboardHandler->getCertificatesByCategoryType($selectedType);
 
         return $this->render('dashboard/index.html.twig', [
             'categories' => $categories,
             'selectedType' => $selectedType,
+            'certificates' => $certificates,
         ]);
     }
 }
