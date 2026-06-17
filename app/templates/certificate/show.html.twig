@@ -1,0 +1,165 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Certificat — {{ certificate.gpsRef }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/certificate.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="qcp-certificate container-fluid py-3 py-md-4">
+
+    {# En-tête #}
+    <div class="row mb-4">
+      <div class="col-12 d-flex align-items-center gap-3">
+          <a href="{{ path('app_dashboard_category', { id: certificate.categoryType.id }) }}"
+            class="btn btn-outline-secondary flex-shrink-0">
+              <i class="bi bi-arrow-left"></i>
+          </a>
+          <div class="flex-grow-1 text-center">
+              <h2 class="text-primary fw-bold mb-0">
+                <i class="bi bi-clipboard2-check"></i>
+                Certificat de conformité
+            </h2>
+            <small class="text-muted">
+                {{ certificate.categoryType.category.name }} — {{ certificate.categoryType.name }}
+            </small>
+        </div>
+    </div>
+</div>
+
+    {# Messages flash #}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="bi bi-check-circle me-2"></i>{{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {# Informations du certificat #}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="qcp-certificate__card">
+                <h5 class="text-warning mb-3">
+                    <i class="bi bi-info-circle me-2"></i>Informations
+                </h5>
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <span class="text-secondary">Site de livraison</span><br>
+                        <strong class="text-light">{{ certificate.deliverySite }}</strong>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <span class="text-secondary">Référence GPS</span><br>
+                        <strong class="text-warning">{{ certificate.gpsRef }}</strong>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <span class="text-secondary">Affaire</span><br>
+                        <strong class="text-light">{{ certificate.project }}</strong>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <span class="text-secondary">Boucle</span><br>
+                        <strong class="text-light">{{ certificate.round }}</strong>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <span class="text-secondary">Date de livraison</span><br>
+                        <strong class="text-light">{{ certificate.deliveryDate|date('d/m/Y') }}</strong>
+                    </div>
+                    {% if certificate.associatedDerogation %}
+                    <div class="col-12 col-md-4">
+                        <span class="text-secondary">Dérogation(s) associée(s)</span><br>
+                        <strong class="text-light">{{ certificate.associatedDerogation }}</strong>
+                    </div>
+                    {% endif %}
+                    {% if certificate.restrictive %}
+                    <div class="col-12 col-md-4">
+                        <span class="text-secondary">N° Restrictive(s)</span><br>
+                        <strong class="text-light">{{ certificate.restrictive }}</strong>
+                    </div>
+                    {% endif %}
+                    {% if certificate.comodif %}
+                    <div class="col-12 col-md-4">
+                        <span class="text-secondary">Comodif(s)</span><br>
+                        <strong class="text-light">{{ certificate.comodif }}</strong>
+                    </div>
+                    {% endif %}
+                    {% if certificate.comments %}
+                    <div class="col-12">
+                        <span class="text-secondary">Commentaires</span><br>
+                        <strong class="text-light">{{ certificate.comments }}</strong>
+                    </div>
+                    {% endif %}
+                    <div class="col-12 col-md-4">
+                        <span class="text-secondary">Dérogation</span><br>
+                        {% if certificate.hasDerogation %}
+                            <span class="badge bg-warning text-dark">Oui</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Non</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <span class="text-secondary">Lièvre</span><br>
+                        {% if certificate.isHare %}
+                            <span class="badge bg-warning text-dark">Oui</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Non</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <span class="text-secondary">Bon à livrer</span><br>
+                        {% if certificate.readyToDeliver %}
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle me-1"></i>Oui
+                            </span>
+                        {% else %}
+                            <span class="badge bg-danger">
+                                <i class="bi bi-x-circle me-1"></i>Non
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Évaluations #}
+    <div class="row">
+        <div class="col-12">
+            <div class="qcp-certificate__card">
+                <h5 class="text-warning mb-3">
+                    <i class="bi bi-list-check me-2"></i>
+                    Résultats de vérification
+                </h5>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px">N°</th>
+                                <th>Critère</th>
+                                <th style="width: 100px" class="text-center">Cotation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for evaluation in certificate.evaluations %}
+                                <tr class="{% if evaluation.rating == 'NC' %}table-danger{% elseif evaluation.rating == 'C' %}table-success{% else %}table-secondary{% endif %}">
+                                    <td class="fw-bold align-middle">
+                                        {{ evaluation.criterion.itemNumber }}
+                                    </td>
+                                    <td class="align-middle">
+                                        {{ evaluation.criterion.label }}
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <span class="badge {% if evaluation.rating == 'NC' %}bg-danger{% elseif evaluation.rating == 'C' %}bg-success{% else %}bg-secondary{% endif %}">
+                                            {{ evaluation.rating }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
