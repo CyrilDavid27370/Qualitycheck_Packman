@@ -15,8 +15,8 @@ class Criterion
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $itemNumber = null;
+    #[ORM\Column]
+    private ?int $itemNumber = null;
 
     #[ORM\Column(length: 1000)]
     private ?string $label = null;
@@ -41,12 +41,12 @@ class Criterion
         return $this->id;
     }
 
-    public function getItemNumber(): ?string
+    public function getItemNumber(): ?int
     {
         return $this->itemNumber;
     }
 
-    public function setItemNumber(string $itemNumber): static
+    public function setItemNumber(int $itemNumber): static
     {
         $this->itemNumber = $itemNumber;
 

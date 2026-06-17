@@ -36,7 +36,9 @@ class DashboardFixtures extends Fixture implements DependentFixtureInterface
                 'Modules GPEC Batteries',
                 'Modules PVAL',
             ],
-            'Batterie' => [],// pas de types pour l'instant
+            'Batterie' => [
+                'batterie HV'
+            ],
         ];
 
         foreach ($data as $categoryName => $types) {
