@@ -2,125 +2,181 @@
 
 {% block title %}Gestion des utilisateurs — Admin QCP{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/admin.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div class="qcp-admin container-fluid py-3 py-md-4">
-    
+<div class="qcp-admin container-fluid py-3 py-md-4">
+
     {# En-tête #}
-        <div class="row mb-4">
-            <div class="col-12 d-flex justify-content-between align-items-center">
-                <h2 class="text-warning fw-bold mb-0">
-                    <i class="bi bi-people"></i>
-                    Utilisateurs
-                </h2>
-                <a href="{{ path('app_admin_user_save') }}" class="btn btn-warning">
-                    <i class="bi bi-person-plus"></i>
-                    <span class="d-none d-md-inline">Nouvel utilisateur</span>
-                </a>
-            </div>
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h2 class="text-warning fw-bold mb-0">
+                <i class="bi bi-people"></i>
+                Utilisateurs
+            </h2>
+            <a href="{{ path('app_admin_user_save') }}" class="btn btn-warning">
+                <i class="bi bi-person-plus"></i>
+                <span class="d-none d-md-inline">Nouvel utilisateur</span>
+            </a>
         </div>
-    
+    </div>
 
     {# Messages flash #}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success alert-dismissible fade show">
             <i class="bi bi-check-circle me-2"></i>{{ message }}
-            <button type="button" class="btn-close"data-bs-dismiss="alert"></button>
-        </div>  
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
     {% endfor %}
 
-    {# Table des utilisateurs #}
     <div class="row">
         <div class="col-12">
-            <div class="card bg-dark border-secondary shadow">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Matricule</th>
-                                    <th>Nom</th>
-                                    <th>Prénom</th>
-                                    <th>Role</th>
-                                    <th>Statut</th>
-                                    <th class="text-end">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for user in users %}
+
+            {# ── Table — tablette et desktop ───────────────── #}
+            <div class="d-none d-md-block">
+                <div class="card bg-dark border-secondary shadow">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover mb-0">
+                                <thead>
                                     <tr>
-                                        <td class="text-warning fw-bold">
-                                            {{ user.matricule}}
-                                        </td>
-                                        <td>{{ user.lastname}}</td>
-                                        <td>{{ user.firstname}}</td>
-                                        <td>
-                                            {% if 'ROLE_ADMIN' in user.roles %}
-                                                <span class="badge bg-danger">
-                                                    <i class="bi bi-shield-lock me-1"></i>
-                                                    Admin
-                                                </span>
-                                            {% else %}
-                                                <span class="badge bg-primary">
-                                                    <i class="bi bi-person me-1"></i>
-                                                    Analyste
-                                                </span>
-                                            {% endif %}
-                                            
-                                        </td>
-                                        <td>
-                                            {% if user.active %}
-                                                <span class="badge bg-success">
-                                                    <i class="bi bi-check-circle me-1"></i>
-                                                    Actif
-                                                </span>
-                                            {% else %}
-                                                <span class="badge bg-secondary">
-                                                    <i class="bi bi-x-circle me-1"></i>
-                                                    Inactif
-                                                </span>
-                                            {% endif %}
-                                        </td>
-                                        <td class="text-end">
-                                            {# Bouton détail #}
-                                            <a href="{{ path('app_admin_user_show', {id: user.id}) }}"
-                                                class="btn btn-sm btn-outline-info me-1"
-                                                title="Voir le détail">
+                                        <th>Matricule</th>
+                                        <th>Nom</th>
+                                        <th>Prénom</th>
+                                        <th>Rôle</th>
+                                        <th>Statut</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                        <tr>
+                                            <td class="text-warning fw-bold">{{ user.matricule }}</td>
+                                            <td>{{ user.lastname }}</td>
+                                            <td>{{ user.firstname }}</td>
+                                            <td>
+                                                {% if 'ROLE_ADMIN' in user.roles %}
+                                                    <span class="badge bg-danger">
+                                                        <i class="bi bi-shield-lock me-1"></i>Admin
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge bg-primary">
+                                                        <i class="bi bi-person me-1"></i>Analyste
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if user.active %}
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle me-1"></i>Actif
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">
+                                                        <i class="bi bi-x-circle me-1"></i>Inactif
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="{{ path('app_admin_user_show', { id: user.id }) }}"
+                                                    class="btn btn-sm btn-outline-info me-1" title="Voir">
                                                     <i class="bi bi-eye"></i>
-                                            </a>
-                                            {# Bouton modifier #}
-                                            <a href="{{ path('app_admin_user_save', {id: user.id}) }}"
-                                                class="btn btn-sm btn-outline-warning me-1"
-                                                title="Modifier">
+                                                </a>
+                                                <a href="{{ path('app_admin_user_save', { id: user.id }) }}"
+                                                    class="btn btn-sm btn-outline-warning me-1" title="Modifier">
                                                     <i class="bi bi-pencil"></i>
-                                            </a>
-                                            {# Bouton supprimer — formulaire POST + CSRF #}
-                                            <form action="{{ path('app_admin_user_delete', { id: user.id}) }}" method="post"
-                                                    class="d-inline"
-                                                    onsubmit="return confirm('Supprimer {{ user.firstname}} {{ user.lastname}} ?')">
-                                                <input type="hidden" name="_token" 
-                                                        value="{{ csrf_token('delete_user_' ~ user.id) }}">
-                                                <button type="submit"
-                                                        class="btn btn-sm btn-outline-danger"
-                                                        title="Supprimer">
-                                                    <i class="bi bi-trash"></i>  
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="6" class="text-center text-muted py-5">
-                                            <i class="bi bi-people fs-3 d-block mb-2 opacity-50"></i>
-                                            Aucun utilisateur trouvé.
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                                </a>
+                                                <form action="{{ path('app_admin_user_delete', { id: user.id }) }}"
+                                                        method="POST"
+                                                        class="d-inline"
+                                                        onsubmit="return confirm('Supprimer {{ user.firstname }} {{ user.lastname }} ?')">
+                                                    <input type="hidden" name="_token"
+                                                            value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted py-5">
+                                                <i class="bi bi-people fs-3 d-block mb-2 opacity-50"></i>
+                                                Aucun utilisateur trouvé.
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            {# ── Cartes — mobile uniquement ─────────────────── #}
+            <div class="d-md-none">
+                {% for user in users %}
+                    <div class="card bg-dark border-secondary mb-2">
+                        <div class="card-body py-2 px-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="text-warning fw-bold">{{ user.matricule }}</span><br>
+                                    <span class="text-light">{{ user.firstname }} {{ user.lastname }}</span>
+                                </div>
+                                <div class="d-flex flex-column gap-1 align-items-end">
+                                    {% if 'ROLE_ADMIN' in user.roles %}
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-shield-lock me-1"></i>Admin
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-primary">
+                                            <i class="bi bi-person me-1"></i>Analyste
+                                        </span>
+                                    {% endif %}
+                                    {% if user.active %}
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle me-1"></i>Actif
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">
+                                            <i class="bi bi-x-circle me-1"></i>Inactif
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="mt-2 d-flex gap-2">
+                                <a href="{{ path('app_admin_user_show', { id: user.id }) }}"
+                                    class="btn btn-sm btn-outline-info">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ path('app_admin_user_save', { id: user.id }) }}"
+                                    class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form action="{{ path('app_admin_user_delete', { id: user.id }) }}"
+                                        method="POST"
+                                        class="d-inline"
+                                        onsubmit="return confirm('Supprimer {{ user.firstname }} {{ user.lastname }} ?')">
+                                    <input type="hidden" name="_token"
+                                            value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-people fs-3 d-block mb-2 opacity-50"></i>
+                        Aucun utilisateur trouvé.
+                    </div>
+                {% endfor %}
+            </div>
+
         </div>
     </div>
+
 </div>
 {% endblock %}

@@ -2,6 +2,10 @@
 
 {% block title %}Gestion des certificats — Admin QCP{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/admin.css') }}">
+{% endblock %}
+
 {% block body %}
 <div class="qcp-admin container-fluid py-3 py-md-4">
 
@@ -24,95 +28,148 @@
         </div>
     {% endfor %}
 
-    {# Table des certificats #}
     <div class="row">
         <div class="col-12">
-            <div class="card bg-dark border-secondary shadow">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Référence GPS</th>
-                                    <th>Affaire</th>
-                                    <th>Type</th>
-                                    <th>Date de livraison</th>
-                                    <th>Analyste</th>
-                                    <th>Bon à livrer</th>
-                                    <th class="text-end">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for certificate in certificates %}
+
+            {# ── Table — tablette et desktop ───────────────── #}
+            <div class="d-none d-md-block">
+                <div class="card bg-dark border-secondary shadow">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover mb-0">
+                                <thead>
                                     <tr>
-                                        <td class="text-warning fw-bold align-middle">
-                                            {{ certificate.gpsRef}}
-                                        </td>
-                                        <td class="align-middle">{{ certificate.project}}</td>
-                                        <td class="align-middle">
-                                            <small class="text-muted">{{ certificate.categoryType.category.name}}</small><br>
-                                            {{ certificate.categoryType.name }}
-                                        </td>
-                                        <td class="align-middle">
-                                            {{ certificate.deliveryDate|date('d/m/Y') }}
-                                        </td>
-                                        <td class="align-middle">
-                                            {{ certificate.user.firstname}} {{ certificate.user.lastname}}
-                                        </td>
-                                        <td class="align-middle">
-                                            {% if certificate.readyToDeliver %}
-                                                <span class="badge bg-success">
-                                                    <i class="bi bi-check-circle me-1"></i>
-                                                    Oui
-                                                </span>
-                                            {% else %}
-                                                <span class="badge bg-danger">
-                                                    <i class="bi bi-x-circle me-1"></i>
-                                                    Non
-                                                </span>
-                                            {% endif %}
-                                        </td>
-                                        <td class="text-end align-middle">
-                                            {# Voir le détail #}
-                                            <a href="{{ path('app_certificate_show', { id: certificate.id }) }}"
-                                                class="btn btn-sm btn-outline-info me-1"
-                                                title="Voir">
+                                        <th>Référence GPS</th>
+                                        <th>Affaire</th>
+                                        <th>Type</th>
+                                        <th>Date de livraison</th>
+                                        <th>Analyste</th>
+                                        <th>Bon à livrer</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for certificate in certificates %}
+                                        <tr>
+                                            <td class="text-warning fw-bold align-middle">
+                                                {{ certificate.gpsRef }}
+                                            </td>
+                                            <td class="align-middle">{{ certificate.project }}</td>
+                                            <td class="align-middle">
+                                                <small class="text-muted">{{ certificate.categoryType.category.name }}</small><br>
+                                                {{ certificate.categoryType.name }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ certificate.deliveryDate|date('d/m/Y') }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ certificate.user.firstname }} {{ certificate.user.lastname }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {% if certificate.readyToDeliver %}
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle me-1"></i>Oui
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">
+                                                        <i class="bi bi-x-circle me-1"></i>Non
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-end align-middle">
+                                                <a href="{{ path('app_certificate_show', { id: certificate.id }) }}"
+                                                   class="btn btn-sm btn-outline-info me-1" title="Voir">
                                                     <i class="bi bi-eye"></i>
-                                            </a>
-                                            {# Modifier #}
-                                            <a href="{{ path('app_certificate_show', { id: certificate.id }) }}"
-                                                class="btn btn-sm btn-outline-warning me-1"
-                                                title="Modifier">
+                                                </a>
+                                                <a href="{{ path('app_admin_certificate_save', { id: certificate.id }) }}"
+                                                   class="btn btn-sm btn-outline-warning me-1" title="Modifier">
                                                     <i class="bi bi-pencil"></i>
-                                            </a>
-                                            {# Supprimer #}
-                                            <form action="{{ path('app_admin_certificate_delete', { id: certificate.id }) }}" 
-                                                    method="POST"
-                                                    class="d-inline"
-                                                    onsubmit="return confirm('Supprimer le certificat {{ certificate.gpsRef }} ?')">
-                                                <input type="hidden" name="_token"
-                                                        value="{{ csrf_token('delete_certificate_' ~ certificate.id) }}">
-                                                <button type="submit"
-                                                        class="btn btn-sm btn-outline-danger"
-                                                        title="Supprimer">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="7" class="text-center text-muted py-5">
-                                            <i class="bi bi-file-earmark fs-3 d-block mb-2 opacity-50"></i>
-                                            Aucun certificat trouvé.
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                                </a>
+                                                <form action="{{ path('app_admin_certificate_delete', { id: certificate.id }) }}"
+                                                      method="POST"
+                                                      class="d-inline"
+                                                      onsubmit="return confirm('Supprimer le certificat {{ certificate.gpsRef }} ?')">
+                                                    <input type="hidden" name="_token"
+                                                           value="{{ csrf_token('delete_certificate_' ~ certificate.id) }}">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted py-5">
+                                                <i class="bi bi-file-earmark fs-3 d-block mb-2 opacity-50"></i>
+                                                Aucun certificat trouvé.
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            {# ── Cartes — mobile uniquement ─────────────────── #}
+            <div class="d-md-none">
+                {% for certificate in certificates %}
+                    <div class="card bg-dark border-secondary mb-2">
+                        <div class="card-body py-2 px-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="text-warning fw-bold">{{ certificate.gpsRef }}</span><br>
+                                    <small class="text-muted">
+                                        {{ certificate.categoryType.category.name }} — {{ certificate.categoryType.name }}
+                                    </small>
+                                </div>
+                                {% if certificate.readyToDeliver %}
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle"></i> Oui
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-danger">
+                                        <i class="bi bi-x-circle"></i> Non
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div class="mt-2 text-light small">
+                                <strong>Affaire :</strong> {{ certificate.project }} |
+                                <strong>Boucle :</strong> {{ certificate.round }}<br>
+                                <strong>Date :</strong> {{ certificate.deliveryDate|date('d/m/Y') }} |
+                                <strong>Analyste :</strong> {{ certificate.user.firstname }} {{ certificate.user.lastname }}
+                            </div>
+                            <div class="mt-2 d-flex gap-2">
+                                <a href="{{ path('app_certificate_show', { id: certificate.id }) }}"
+                                    class="btn btn-sm btn-outline-info">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ path('app_admin_certificate_save', { id: certificate.id }) }}"
+                                    class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form action="{{ path('app_admin_certificate_delete', { id: certificate.id }) }}"
+                                        method="POST"
+                                        class="d-inline"
+                                        onsubmit="return confirm('Supprimer ce certificat ?')">
+                                    <input type="hidden" name="_token"
+                                            value="{{ csrf_token('delete_certificate_' ~ certificate.id) }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-file-earmark fs-3 d-block mb-2 opacity-50"></i>
+                        Aucun certificat trouvé.
+                    </div>
+                {% endfor %}
+            </div>
+
         </div>
     </div>
 
