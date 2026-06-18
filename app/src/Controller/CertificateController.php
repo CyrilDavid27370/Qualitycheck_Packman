@@ -19,6 +19,10 @@ final class CertificateController extends AbstractController
     )
     {
     }
+    
+    // ══════════════════════════════════════════════════════
+    // ESPACE ANALYSTE
+    // ══════════════════════════════════════════════════════
 
     // ── Création d'un certificat ───────────────────────────
     // Le categoryTypeId est passé en paramètre depuis le dashboard
@@ -54,6 +58,7 @@ final class CertificateController extends AbstractController
             'criterions' =>$criterions,
         ]);
     }
+    
 
     // ── Détail d'un certificat ─────────────────────────────
     #[Route('/certificate/{id}', name: 'app_certificate_show', requirements: ['id' => '\d+'])]
@@ -64,5 +69,65 @@ final class CertificateController extends AbstractController
         return $this->render('certificate/show.html.twig', [
             'certificate' => $certificate,
         ]);
+    }
+
+    // ══════════════════════════════════════════════════════
+    // ESPACE ADMIN
+    // ══════════════════════════════════════════════════════
+
+    // ── Liste admin de tous les certificats ────────────────
+    #[Route('/admin/certificate', name: 'app_admin_certificate_index')]
+    #[IsGranted('ROLE_ADMIN')]
+    
+    public function adminIndex(): Response
+    {
+        return $this->render('admin/certificate/index.html.twig', [
+            'certificates' => $this->certificateHandler->getAllCertificates(),
+        ]);
+    }
+    
+    // ── Modification d'un certificat ───────────────────────
+    #[Route('/admin/certificate/save/{id}', name: 'app_admin_certificate_save', requirements: ['id' => '\d+'], defaults: ['id' => null])]
+    #[IsGranted('ROLE_ADMIN')]
+    
+    public function adminSave(Request $request, ?int $id = null): Response
+    {
+        $certificate = $this->certificateHandler->getCertificateById($id);
+        $categoryType = $certificate->getCategoryType();
+        $criterions = $this->certificateHandler->getCriterionsByCategoryType($categoryType);
+
+        $form = $this->createForm(CertificateFormType::class, $certificate);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $evaluations = $request->request->all('evaluations');
+            $this->certificateHandler->update($certificate, $evaluations);
+
+            $this->addFlash('success', 'Certificat modifié avec succès.');
+
+            return $this->redirectToRoute('app_admin_certificate_index');
+        }
+    
+    
+        return $this->render('certificate/new.html.twig', [
+            'form' => $form,
+            'categoryType' => $categoryType,
+            'criterions' => $criterions,
+            'isEdit' => true,
+            'certificate' => $certificate,
+        ]);
+    }
+
+     // ── Suppression d'un certificat ────────────────────────
+    #[Route('/admin/certificate/delete/{id}', name: 'app_admin_certificate_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function adminDelete(int $id, Request $request): Response
+    {
+        if ($this->isCsrfTokenValid('delete_certificate_' . $id, $request->request->get('_token'))) {
+            $this->certificateHandler->delete($id);
+            $this->addFlash('success', 'Certificat supprimé avec succès.');
+        }
+
+        return $this->redirectToRoute('app_admin_certificate_index');
     }
 }
