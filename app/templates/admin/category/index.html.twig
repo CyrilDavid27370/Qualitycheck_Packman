@@ -89,6 +89,11 @@
                                                                             <i class="bi bi-trash"></i>
                                                                 </button>
                                                             </form>
+                                                            <a href="{{ path('app_admin_criterion_index', { categoryTypeId: type.id }) }}"
+                                                                class="btn btn-sm btn-outline-info py-0 px-1 flex-shrink-0"
+                                                                title="Voir les critères">
+                                                                    <i class="bi bi-list-check"></i>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 {% else %}

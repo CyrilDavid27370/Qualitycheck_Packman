@@ -27,7 +27,7 @@
     font-weight: 600;
 }
 
-/* Empêche le retour à la ligne dans toutes les cellules */
+/* Desktop — pas de retour à la ligne */
 .qcp-admin .table td,
 .qcp-admin .table th {
     white-space: nowrap;
@@ -61,5 +61,15 @@
     .qcp-admin .table td,
     .qcp-admin .table th {
         padding: 0.5rem 0.75rem;
+    }
+
+    /* Texte multiligne sur mobile */
+    .qcp-admin .table td {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .qcp-admin .table th {
+        white-space: nowrap;
     }
 }

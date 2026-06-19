@@ -4,8 +4,10 @@ namespace App\Service\Admin;
 
 use App\Entity\Category;
 use App\Entity\CategoryType;
+use App\Entity\Criterion;
 use App\Repository\CategoryRepository;
 use App\Repository\CategoryTypeRepository;
+use App\Repository\CriterionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CategoryHandler
@@ -13,6 +15,7 @@ class CategoryHandler
   public function __construct(
     private CategoryRepository $categoryRepository,
     private CategoryTypeRepository $categoryTypeRepository,
+    private CriterionRepository $criterionRepository,
     private EntityManagerInterface $em,
   )
   {
@@ -81,6 +84,43 @@ class CategoryHandler
 
         $this->em->remove($type);
         $this->em->flush();
+  }
+
+   // ── Critères ───────────────────────────────────────────
+  
+  public function getCriterionById(int $id): Criterion
+  {
+    $criterion = $this->criterionRepository->find($id);
+
+    return $criterion;
+  }
+
+  public function saveCriterion(Criterion $criterion): void
+  {
+    $this->em->persist($criterion);
+    $this->em->flush();
+  }
+
+  public function deleteCriterion(int $id): void
+  {
+    $criterion =$this->getCriterionById($id);
+
+    if (!$criterion->getEvaluations() ->isEmpty()) {
+      throw new \LogicException(
+        'Impossible de supprimer ce critère : il est utilisé dans des certificats.'
+      );
+    }
+
+    $this->em->remove($criterion);
+    $this->em->flush();
+  }
+
+  public function getCriterionsByCategoryType(int $categoryTypeId): array
+  {
+      return $this->criterionRepository->findBy(
+        ['categoryType' => $categoryTypeId],
+        ['itemNumber' => 'ASC']
+    );
   }
 
 }

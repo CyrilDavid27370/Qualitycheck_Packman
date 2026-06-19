@@ -48,7 +48,7 @@ class CriterionFixtures extends Fixture implements DependentFixtureInterface
         $this->persistCriterions($manager, $batterieType, $criterions);
 
         // ── Modules GPEC batteries ─────────────────────────────
-        $moduleGpecType = $categoryTypeRepo->findOneBy(['name' => 'Modules GPEC batteries']);
+        $moduleGpecType = $categoryTypeRepo->findOneBy(['name' => 'Modules GPEC Batteries']);
         $criterions = [
             [1,  'Présence fiche GPS'],
             [2,  'Conformité étiquette identification Module avec GPS'],
@@ -301,7 +301,7 @@ class CriterionFixtures extends Fixture implements DependentFixtureInterface
         $this->persistCriterions($manager, $moteurThermiqueType, $criterions);
 
         // ── Boîte de vitesses ──────────────────────────────────
-        $boiteVitessesType = $categoryTypeRepo->findOneBy(['name' => 'Boîte de vitesses']);
+        $boiteVitessesType = $categoryTypeRepo->findOneBy(['name' => 'Boîte de vitesse']);
         $criterions = [
             [1,  'Présence fiche GPS'],
             [2,  'Plaque support BV collée en conformité avec GPS et fiche contrat'],

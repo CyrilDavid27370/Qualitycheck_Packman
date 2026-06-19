@@ -37,7 +37,7 @@ class DashboardFixtures extends Fixture implements DependentFixtureInterface
                 'Modules PVAL',
             ],
             'Batterie' => [
-                'batterie HV'
+                'Batterie HV'
             ],
         ];
 
