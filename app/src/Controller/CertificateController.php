@@ -43,7 +43,9 @@ final class CertificateController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupère les évaluations saisies (SO/C/NC par critère)
             $evaluations = $request->request->all('evaluations');
-            $this->certificateHandler->save($certificate, $evaluations);
+            $ncPhotos = $request->files->all('nc_photos');
+
+            $this->certificateHandler->save($certificate, $evaluations, $ncPhotos);
 
             $this->addFlash('success', 'Certificat créé avec succès.');
 
@@ -101,7 +103,9 @@ final class CertificateController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $evaluations = $request->request->all('evaluations');
-            $this->certificateHandler->update($certificate, $evaluations);
+            $ncPhotos = $request->files->all('nc_photos');
+
+            $this->certificateHandler->update($certificate, $evaluations, $ncPhotos);
 
             $this->addFlash('success', 'Certificat modifié avec succès.');
 
