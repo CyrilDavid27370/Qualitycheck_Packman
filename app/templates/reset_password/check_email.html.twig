@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Email envoyé — QCP{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card bg-dark border-secondary shadow">
+                <div class="card-body p-4 text-center">
+
+                    <div class="mb-4">
+                        <img src="{{ asset('images/Logo_qcp.png') }}"
+                            alt="Logo QCP" height="60" class="mb-3">
+                        <i class="bi bi-envelope-check text-warning fs-1 d-block mb-3"></i>
+                        <h2 class="text-warning fw-bold mb-1">
+                            Email envoyé
+                        </h2>
+                    </div>
+
+                    <p class="text-light">
+                        Un email contenant un lien de définition du mot de passe a été envoyé.
+                        Ce lien expirera dans
+                        <strong class="text-warning">
+                            {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}
+                        </strong>.
+                    </p>
+
+                    <p class="text-muted small">
+                        Si vous ne recevez pas d'email, vérifiez votre dossier spam ou
+                        <a href="{{ path('app_forgot_password_request') }}" class="text-warning">
+                            réessayez
+                        </a>.
+                    </p>
+
+                    <a href="{{ path('app_home') }}" class="btn btn-outline-secondary mt-2">
+                        <i class="bi bi-house-door me-1"></i>
+                        Retour à l'accueil
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

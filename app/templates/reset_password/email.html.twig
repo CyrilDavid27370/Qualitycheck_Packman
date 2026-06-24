@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; padding: 30px;">
+
+        <div style="text-align: center; margin-bottom: 24px;">
+            <h2 style="color: #b58900; margin: 0;">QualityCheck Packman</h2>
+        </div>
+
+        <h2 style="color: #333;">Définition de votre mot de passe</h2>
+
+        <p style="color: #555;">
+            Bonjour,<br><br>
+            Votre compte QualityCheck Packman a été créé par Cyril DAVID Administrateur.
+            Veuillez cliquer sur le lien ci-dessous pour définir votre mot de passe.
+        </p>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{ url('app_reset_password', { token: resetToken.token }) }}"
+              style="background-color: #b58900; color: #ffffff; padding: 12px 24px;
+                      text-decoration: none; border-radius: 6px; font-weight: bold;">
+                Définir mon mot de passe
+            </a>
+        </div>
+
+        <p style="color: #888; font-size: 14px;">
+            Ce lien expirera dans
+            <strong>{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}</strong>.
+        </p>
+
+        <p style="color: #888; font-size: 14px;">
+            Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;">
+
+        <p style="color: #aaa; font-size: 12px; text-align: center;">
+            © {{ "now"|date("Y") }} QualityCheck Packman — Tous droits réservés
+        </p>
+
+    </div>
+
+</body>
+</html>

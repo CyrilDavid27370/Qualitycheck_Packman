@@ -7,7 +7,11 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 class UserHandler
 {
@@ -15,6 +19,8 @@ class UserHandler
     private UserRepository $userRepository,
     private EntityManagerInterface $em,
     private UserPasswordHasherInterface $passwordHasher,
+    private ResetPasswordHelperInterface $resetPasswordHelper,
+    private MailerInterface $mailer,
   )
   {
   }
@@ -55,11 +61,49 @@ class UserHandler
     // Compte actif par défaut à la création
     if (!$isEdit) {
       $user->setActive(true);
+
+    // Mot de passe temporaire aléatoire si non saisi
+      if (!$plainPassword) {
+        $user->setPassword(
+          $this->passwordHasher->hashPassword($user, bin2hex(random_bytes(16)))
+        );
+      }
     }
 
     $this->em->persist($user);
     $this->em->flush();
+
+    // Envoie l'email de définition de mot de passe à la création
+        if (!$isEdit) {
+            $this->sendPasswordSetupEmail($user);
+        }
   }
+
+  private function sendPasswordSetupEmail(User $user): void
+    {
+        try {
+            $resetToken = $this->resetPasswordHelper->generateResetToken($user);
+
+            $email = (new TemplatedEmail())
+                ->from(new Address(
+                    'noreply@qualitycheck-packman.local',
+                    'QualityCheck Packman Administrateur'
+                ))
+                ->to($user->getMatricule() . '@qualitycheck-packman.local')
+                ->subject('Définition de votre mot de passe — QualityCheck Packman')
+                ->htmlTemplate('reset_password/email.html.twig')
+                ->context([
+                    'resetToken' => $resetToken,
+                ])
+            ;
+
+            $this->mailer->send($email);
+
+        } catch (\Exception $e) {
+            // Si l'envoi échoue on ne bloque pas la création de l'utilisateur
+        }
+    }
+
   
   // Suppression avec protection auto-suppression
   public function delete(int $id, User $currentUser): void
