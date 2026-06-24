@@ -55,6 +55,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Aperçu des photos sélectionnées
     const fileInput = uploadZone.querySelector('input[type="file"]');
     fileInput.addEventListener('change', function() {
+      console.log('Fichiers sélectionnés:', this.files.length);
+      console.log('Nom input:', this.name);
+      
       const preview = uploadZone.querySelector('.nc-photo-preview');
       preview.innerHTML = '';
 

@@ -80,7 +80,6 @@ final class CertificateController extends AbstractController
     // ── Liste admin de tous les certificats ────────────────
     #[Route('/admin/certificate', name: 'app_admin_certificate_index')]
     #[IsGranted('ROLE_ADMIN')]
-    
     public function adminIndex(): Response
     {
         return $this->render('admin/certificate/index.html.twig', [
@@ -91,7 +90,6 @@ final class CertificateController extends AbstractController
     // ── Modification d'un certificat ───────────────────────
     #[Route('/admin/certificate/save/{id}', name: 'app_admin_certificate_save', requirements: ['id' => '\d+'], defaults: ['id' => null])]
     #[IsGranted('ROLE_ADMIN')]
-    
     public function adminSave(Request $request, ?int $id = null): Response
     {
         $certificate = $this->certificateHandler->getCertificateById($id);

@@ -30,7 +30,7 @@
     </div>
 </div>
 
-    {{ form_start(form, { attr : { novalidate : 'novalidate', id: 'certificate-form' } }) }}
+    {{ form_start(form, { attr : { novalidate : 'novalidate', id: 'certificate-form', enctype: 'multipart/form-data' } }) }}
 
     {# ── Section 1 : En-tête du certificat ─────────────── #}
     <div class="row mb-4">

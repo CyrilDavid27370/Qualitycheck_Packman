@@ -11,22 +11,22 @@
 
     {# En-tête #}
     <div class="row mb-4">
-      <div class="col-12 d-flex align-items-center gap-3">
-          <a href="{{ path('app_dashboard_category', { id: certificate.categoryType.id }) }}"
-            class="btn btn-outline-secondary flex-shrink-0">
-              <i class="bi bi-arrow-left"></i>
-          </a>
-          <div class="flex-grow-1 text-center">
-              <h2 class="text-primary fw-bold mb-0">
-                <i class="bi bi-clipboard2-check"></i>
-                Certificat de conformité
-            </h2>
-            <small class="text-muted">
-                {{ certificate.categoryType.category.name }} — {{ certificate.categoryType.name }}
-            </small>
+        <div class="col-12 d-flex align-items-center gap-3">
+            <a href="{{ path('app_dashboard_category', { id: certificate.categoryType.id }) }}"
+                class="btn btn-outline-secondary flex-shrink-0">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <div class="flex-grow-1 text-center">
+                <h2 class="text-warning fw-bold mb-0">
+                    <i class="bi bi-clipboard2-check"></i>
+                    Certificat de conformité
+                </h2>
+                <small class="text-muted">
+                    {{ certificate.categoryType.category.name }} — {{ certificate.categoryType.name }}
+                </small>
+            </div>
         </div>
     </div>
-</div>
 
     {# Messages flash #}
     {% for message in app.flashes('success') %}
@@ -146,6 +146,21 @@
                                     </td>
                                     <td class="align-middle">
                                         {{ evaluation.criterion.label }}
+
+                                        {# Photos NC #}
+                                        {% if evaluation.rating == 'NC' and evaluation.images|length > 0 %}
+                                            <div class="d-flex flex-wrap gap-2 mt-2">
+                                                {% for image in evaluation.images %}
+                                                    <a href="{{ asset(image.path) }}"
+                                                        target="_blank"
+                                                        title="{{ image.alt }}">
+                                                        <img src="{{ asset(image.path) }}"
+                                                                alt="{{ image.alt }}"
+                                                                style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:2px solid #dc3545;">
+                                                    </a>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
                                     </td>
                                     <td class="text-center align-middle">
                                         <span class="badge {% if evaluation.rating == 'NC' %}bg-danger{% elseif evaluation.rating == 'C' %}bg-success{% else %}bg-secondary{% endif %}">
