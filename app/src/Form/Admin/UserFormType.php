@@ -72,7 +72,7 @@ class UserFormType extends AbstractType
                 ],
                 'multiple' => true,
                 'expanded' => true,
-                'attr' => ['class' => 'form-check'],
+                'row_attr'   => ['class' => 'd-flex flex-column gap-2'],
             ])
             ->add('active', CheckboxType::class, [
                 'label' => 'Compte actif',

@@ -44,8 +44,15 @@
         </div>
 
         <div class="mb-3">
-          {{ form_label(form.roles,null, { label_attr: { class: 'form-label text-light' } }) }}
-          {{ form_widget(form.roles) }}
+          {{ form_label(form.roles, null, { label_attr: { class: 'form-label text-light' } }) }}
+            <div class="d-flex flex-column gap-2 mt-1">
+              {% for role in form.roles %}
+                <div class="form-check">
+                  {{ form_widget(role, { attr: { class: 'form-check-input' } }) }}
+                  {{ form_label(role, null, { label_attr: { class: 'form-check-label text-light' } }) }}
+                </div>
+              {% endfor %}
+            </div>
           {{ form_errors(form.roles) }}
         </div>
 
