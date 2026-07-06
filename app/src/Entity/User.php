@@ -20,7 +20,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private int $id;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 50)]
     private string $matricule;
 
     /**
